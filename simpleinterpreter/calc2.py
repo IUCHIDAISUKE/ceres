@@ -4,7 +4,7 @@
 # there is no more input left for lexical analysis
 
 
-INTEGER, PLUS, MINUS, MULTIPLE, DIVIDE, EOF = 'INTEGER', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'EOF'
+INTEGER, PLUS, MINUS, EOF = 'INTEGER', 'PLUS', 'MINUS', 'EOF'
 
 
 class Token(object):
@@ -81,17 +81,11 @@ class Interpreter(object):
                 self.advance()
                 return Token(MINUS, '-')
 
-            if self.current_char == '*':
-                self.advance()
-                return Token(MULTIPLE, '*')
-
-            if self.current_char == '/':
-                self.advance()
-                return Token(DIVIDE, '/')
-
             self.error()
 
         return Token(EOF, None)
+
+        self.error()
 
     def eat(self, token_type):
         if self.current_token.type == token_type:
@@ -117,13 +111,8 @@ class Interpreter(object):
 
         if op.type == PLUS:
             result = left.value + right.value
-        elif op.type == MINUS:
-            result = left.value - right.value
-        elif op.type == MULTIPLE:
-            result = left.value * right.value
         else:
-            result = left.value / right.value
-
+            result = left.value - right.value
         return result
 
 
